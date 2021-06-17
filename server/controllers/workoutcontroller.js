@@ -34,7 +34,7 @@ router.get("/", validateJWT, async (req, res) => {
     try {
         const userWorkouts = await WorkoutModel.findAll({
             where: {
-                owner: id
+                owner_id: id
             }
         })
         res.status(200).json(userWorkouts)
@@ -59,15 +59,15 @@ router.get("/:id", async (req, res) => {
 
 /* Update a Workout */
 
-router.put("/update/:entryId", validateJWT, async (req, res) => {
+router.put("/:id", validateJWT, async (req, res) => {
     const { description, definition, result } = req.body
-    const workoutId = req.params.entryId
+    const workoutId = req.params.id
     const userId = req.user.id
 
     const query = {
         where: {
             id: workoutId,
-            owner: userId
+            owner_id: userId
         }
     }
 
@@ -79,7 +79,7 @@ router.put("/update/:entryId", validateJWT, async (req, res) => {
 
     try {
         const update = await WorkoutModel.update(updatedWorkout, query)
-        res.status(200).json(update)
+        res.status(200).json(updatedWorkout)
     } catch (err) {
         res.status(500).json({ error: err })
     }
@@ -87,7 +87,7 @@ router.put("/update/:entryId", validateJWT, async (req, res) => {
 
 /* Delete a Workout */
 
-router.delete("/delete/:id", validateJWT, async (req, res) => {
+router.delete("/:id", validateJWT, async (req, res) => {
     const ownerId = req.user.id
     const workoutId = req.params.id
 
@@ -95,7 +95,7 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
         const query = {
             where: {
                 id: workoutId,
-                owner: ownerId
+                owner_id: ownerId
             }
         }
 
