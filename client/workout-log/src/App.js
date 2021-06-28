@@ -1,29 +1,41 @@
 import './App.css';
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sitebar from './Home/Navbar'
 import Auth from './auth/Auth';
+import WorkoutIndex from './workouts/WorkoutIndex';
 
 function App() {
   const [sessionToken, setSessionToken] = useState('')
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      sessionToken(localStorage.getItem('token'))
+      setSessionToken(localStorage.getItem('token'))
     }
   }, [])
 
   const updateToken = (newToken) => {
     localStorage.setItem('token', newToken)
-    sessionToken(newToken)
+    setSessionToken(newToken)
     console.log(sessionToken)
+  }
+
+  const clearToken = () => {
+    localStorage.clear()
+    setSessionToken('')
+  }
+
+  const protectedViews = () => {
+    return (sessionToken === localStorage.getItem('token') ? <WorkoutIndex token={sessionToken}/>
+    : <Auth updateToken={updateToken}/>)
   }
 
   return (
     <div>
-      <Sitebar />
-      <Auth updateToken={updateToken} />
+      <Sitebar clickLogout={clearToken} />
+      {protectedViews()}
+      {/* <Auth updateToken={updateToken} /> */}
     </div>
   );
 }
 
-export default App;
+export default App
