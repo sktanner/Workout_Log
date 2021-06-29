@@ -10,7 +10,7 @@ router.get('/practice', validateJWT, (req, res) => {
 /* Workout Log Create */
 
 router.post("/", validateJWT, async (req, res) => {
-    const { description, definition, result } = req.body
+    const { description, definition, result } = req.body.log
     const { id } = req.user
     const WorkoutEntry = {
         description,
@@ -24,7 +24,7 @@ router.post("/", validateJWT, async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err })
     }
-    WorkoutModel.create(WorkoutEntry)
+    // WorkoutModel.create(WorkoutEntry)
 })
 
 /* Get Workouts by User */
@@ -60,7 +60,7 @@ router.get("/:id", async (req, res) => {
 /* Update a Workout */
 
 router.put("/:id", validateJWT, async (req, res) => {
-    const { description, definition, result } = req.body
+    const { description, definition, result } = req.body.log
     const workoutId = req.params.id
     const userId = req.user.id
 

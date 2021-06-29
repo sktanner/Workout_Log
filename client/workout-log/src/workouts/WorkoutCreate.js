@@ -8,6 +8,7 @@ const WorkoutCreate = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(description, definition, result);
         fetch('http://localhost:3000/log/', {
             method: 'POST',
             body: JSON.stringify({log: {description: description, definition: definition, result: result}}),
@@ -28,7 +29,7 @@ const WorkoutCreate = (props) => {
     return(
         <>
             <h3>Log a Workout</h3>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <FormGroup>
                     <Label htmlFor="description"/>
                     <Input name="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
@@ -36,6 +37,7 @@ const WorkoutCreate = (props) => {
                 <FormGroup>
                     <Label htmlFor="definition"/>
                     <Input type="select" name="definition" value={definition} onChange={(e) => setDefinition(e.target.value)}>
+                        <option></option>
                         <option value="Time">Time</option>
                         <option value="Weight">Weight</option>
                         <option value="Distance">Distance</option>
